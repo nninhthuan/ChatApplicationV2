@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyViewHolder> {
 
-    private final List<MessagesList> messagesLists;
+    private List<MessagesList> messagesLists;
     private final Context context;
 
     public MessagesAdapter(List<MessagesList> messagesLists, Context context) {
@@ -57,6 +57,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
         }
         else {
             holder.unseenMessages.setVisibility(View.VISIBLE);
+            holder.unseenMessages.setText(list2.getUnseenMessages()+"");
+            holder.lastMessages.setTextColor(context.getResources().getColor(R.color.theme_color_80));
         }
 
         holder.rootLayout.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +66,19 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
             public void onClick(View view) {
 
                 Intent intent = new Intent(context, Chat.class);
+                intent.putExtra("mobile", list2.getMobile());
                 intent.putExtra("name", list2.getName());
                 intent.putExtra("profile_pic", list2.getProfilePic());
+                intent.putExtra("chat_key", list2.getChatKey());
 
                 context.startActivity(intent);
             }
         });
+    }
+
+    public void updateData(List<MessagesList> messagesLists){
+        this.messagesLists = messagesLists;
+        notifyDataSetChanged();
     }
 
     @Override
