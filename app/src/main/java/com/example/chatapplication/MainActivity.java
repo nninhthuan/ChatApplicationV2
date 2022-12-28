@@ -75,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
                 final String profilePicUrl = snapshot.child("users").child(mobile).child("profile_pic").getValue(String.class);
 
-                if (!profilePicUrl.isEmpty()){
+                //if (!profilePicUrl.isEmpty()){
 
                     // set profile pic to circle image view
                     Picasso.get().load(profilePicUrl).into(userProfilePic);
-                }
+                //}
 
                 progressDialog.dismiss();
             }

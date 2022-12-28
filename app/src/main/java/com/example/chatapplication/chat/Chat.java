@@ -2,6 +2,8 @@ package com.example.chatapplication.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,13 +20,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chat extends AppCompatActivity {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://chatapplication-v2-default-rtdb.firebaseio.com/");
+
+    private final List<ChatList> chatLists = new ArrayList<>();
     private String chatKey;
     String getUserMobile = "";
+    private RecyclerView chattingRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +44,8 @@ public class Chat extends AppCompatActivity {
         final EditText messageEditText = findViewById(R.id.messageEditTxt);
         final CircleImageView profilePic = findViewById(R.id.profilePic);
         final ImageView sendBtn = findViewById(R.id.sendBtn);
+
+        chattingRecyclerView = findViewById(R.id.chattingRecyclerView);
 
         // get data from messages adapter class
         final String getName = getIntent().getStringExtra("name");
@@ -49,26 +59,49 @@ public class Chat extends AppCompatActivity {
         nameTV.setText(getName);
         Picasso.get().load(getProfilePic).into(profilePic);
 
-        if (chatKey.isEmpty()){
+        chattingRecyclerView.setHasFixedSize(true);
+        chattingRecyclerView.setLayoutManager(new LinearLayoutManager(Chat.this));
 
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (chatKey.isEmpty()) {
                     // generate chat key. by default chatKey is 1
                     chatKey = "1";
 
-                    if (snapshot.hasChild("chat")){
+                    if (snapshot.hasChild("chat")) {
                         chatKey = String.valueOf(snapshot.child("chat").getChildrenCount() + 1);
                     }
                 }
+                if (snapshot.hasChild("chat")){
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    if (snapshot.child("chat").child(chatKey).hasChild("messages")){
 
+                        for(DataSnapshot messagesSnapshot : snapshot.child("chat").child(chatKey).child("messages").getChildren()){
+
+                            if (messagesSnapshot.hasChild("msg") && messagesSnapshot.hasChild("mobile")){
+
+                                final String messageTimestamps = messagesSnapshot.getKey();
+                                final String getMobile = messagesSnapshot.child("mobile").getValue(String.class);
+                                final String getMsg = messagesSnapshot.child("msg").getValue(String.class);
+
+                                if (getMobile.equals(getMobile) && Long.parseLong(messageTimestamps) > Long.parseLong(MemoryData.getLastMsgTS(Chat.this, chatKey))){
+
+                                }
+                            }
+
+                        }
+                    }
                 }
-            });
-        }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +119,8 @@ public class Chat extends AppCompatActivity {
                 databaseReference.child("chat").child(chatKey).child("messages").child(currentTimestamp).child("msg").setValue(getTxtMessages);
                 databaseReference.child("chat").child(chatKey).child("messages").child(currentTimestamp).child("mobile").setValue(getUserMobile);
 
+                // clear edit text
+                messageEditText.setText("");
             }
         });
 

@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/drawable/back_btn.xml" value="0.149" />
+        <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/drawable/my_msg_back.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/drawable/opo_msg_back.xml" value="0.187" />
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/drawable/round_back_light_10.xml" value="0.1215" />
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/drawable/round_back_theme_1000.xml" value="0.107" />
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/drawable/round_back_white_10.xml" value="0.107" />
@@ -12,6 +14,7 @@
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/layout/activity_chat.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/layout/chat_adapter_layout.xml" value="0.1852355072463768" />
         <entry key="..\:/AndroidStudioProjects/ChatApplication/app/src/main/res/layout/messages_adapter_layout.xml" value="0.264" />
       </map>
     </option>
