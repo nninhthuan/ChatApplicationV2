@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
 
-    private final List<ChatList> chatLists;
+    private List<ChatList> chatLists;
     private final Context context;
     private String userMobile;
 
@@ -41,10 +41,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         if (list2.getMobile().equals(userMobile)) {
             holder.myLayout.setVisibility(View.VISIBLE);
             holder.oppoLayout.setVisibility(View.GONE);
+
+            holder.myMessage.setText(list2.getMessage());
+            holder.myTime.setText(list2.getDate()+" "+list2.getTime());
         }
         else {
             holder.myLayout.setVisibility(View.GONE);
             holder.oppoLayout.setVisibility(View.VISIBLE);
+
+            holder.oppoMessage.setText(list2.getMessage());
+            holder.myTime.setText(list2.getDate()+" "+list2.getTime());
         }
     }
 
@@ -53,6 +59,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         return chatLists.size();
     }
 
+    public void updateChatList(List<ChatList> chatLists){
+        this.chatLists = chatLists;
+    }
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private LinearLayout oppoLayout, myLayout;
